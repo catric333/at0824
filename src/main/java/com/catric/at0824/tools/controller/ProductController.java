@@ -21,49 +21,57 @@ import com.catric.at0824.tools.model.Tool;
 
 @RestController
 public class ProductController {
-    
-    // TODOL: change this to a backend call instead of saving off in memory to an arraylist
-    private final Map<String, RentalAgreement> rentalAgreementMap = new HashMap<String, RentalAgreement>();
 
-    @PostMapping("/createRentalAgreement")
-    public ResponseEntity<RentalAgreement> createRentalAgreement(@RequestBody final Tool tool) {
-        RentalAgreement newRentalAgreement = new RentalAgreement(tool);
-        rentalAgreementMap.put(newRentalAgreement.getUUID(), newRentalAgreement);
-        return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(newRentalAgreement);
-    }
+  // TODOL: change this to a backend call instead of saving off in memory to an arraylist
+  private final Map<String, RentalAgreement> rentalAgreementMap = new HashMap<String, RentalAgreement>();
 
-    @GetMapping("/getAllRentalAgreements") 
-    public List<RentalAgreement> getAllRentalAgreements() {
-        return new ArrayList<>(rentalAgreementMap.values());
-    }
+  @PostMapping("/createRentalAgreement")
+  public ResponseEntity<RentalAgreement> createRentalAgreement(@RequestBody final Tool tool) {
+    RentalAgreement newRentalAgreement = new RentalAgreement(tool);
+    rentalAgreementMap.put(newRentalAgreement.getUUID(), newRentalAgreement);
+    return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON)
+        .body(newRentalAgreement);
+  }
 
-    @GetMapping("/getRentalAgreement/{id}")
-    public ResponseEntity<RentalAgreement> getRentalAgreementById(@PathVariable final String id) {
-        if (!rentalAgreementMap.containsKey(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON).body(new RentalAgreement());
-        }
-        RentalAgreement target = rentalAgreementMap.get(id);
-        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(target);
-    }
+  @GetMapping("/getAllRentalAgreements")
+  public List<RentalAgreement> getAllRentalAgreements() {
+    return new ArrayList<>(rentalAgreementMap.values());
+  }
 
-    @PatchMapping("/updateRentalAgreement/{id}")
-    public ResponseEntity<RentalAgreement> updateRentalAgreementById(@PathVariable final String id, @RequestBody final Tool tool) {
-        RentalAgreement newRentalAgreement = new RentalAgreement(tool);
-        newRentalAgreement.setUUID(id);
-        if (!rentalAgreementMap.containsKey(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON).body(newRentalAgreement);
-        }
-        rentalAgreementMap.replace(id, newRentalAgreement);
-        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(newRentalAgreement);
+  @GetMapping("/getRentalAgreement/{id}")
+  public ResponseEntity<RentalAgreement> getRentalAgreementById(@PathVariable final String id) {
+    if (!rentalAgreementMap.containsKey(id)) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON)
+          .body(new RentalAgreement());
     }
+    RentalAgreement target = rentalAgreementMap.get(id);
+    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+        .body(target);
+  }
 
-    @DeleteMapping("/deleteRentalAgreement/{id}")
-    public ResponseEntity<RentalAgreement> deleteRentalAgreementById(@PathVariable final String id) {
-        if (!rentalAgreementMap.containsKey(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON).body(new RentalAgreement());
-        }
-        RentalAgreement target = rentalAgreementMap.remove(id);
-        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(target);
+  @PatchMapping("/updateRentalAgreement/{id}")
+  public ResponseEntity<RentalAgreement> updateRentalAgreementById(@PathVariable final String id,
+      @RequestBody final Tool tool) {
+    RentalAgreement newRentalAgreement = new RentalAgreement(tool);
+    newRentalAgreement.setUUID(id);
+    if (!rentalAgreementMap.containsKey(id)) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON)
+          .body(newRentalAgreement);
     }
+    rentalAgreementMap.replace(id, newRentalAgreement);
+    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+        .body(newRentalAgreement);
+  }
+
+  @DeleteMapping("/deleteRentalAgreement/{id}")
+  public ResponseEntity<RentalAgreement> deleteRentalAgreementById(@PathVariable final String id) {
+    if (!rentalAgreementMap.containsKey(id)) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON)
+          .body(new RentalAgreement());
+    }
+    RentalAgreement target = rentalAgreementMap.remove(id);
+    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+        .body(target);
+  }
 
 }
